@@ -3,10 +3,11 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit2, Trash2, ExternalLink, BarChart3, Loader2 } from 'lucide-react';
-import { JobApplication, Resume } from '@/types';
+import { JobApplication, Resume } from '@/interfaces/types';
 import AnimatedWrapper from './AnimatedWrapper';
 import { cn } from '@/lib/utils';
 import ResumeAnalysisModal from './ResumeAnalysisModal';
+import { API_URL } from '@/constants';
 
 interface JobCardProps {
   job: JobApplication;
@@ -15,7 +16,6 @@ interface JobCardProps {
   onDelete: (id: string) => void;
   index: number;
 }
-const API_URL = import.meta.env.VITE_API_URL;
 
 const JobCard = ({ 
   job, 

@@ -1,6 +1,6 @@
-import { Resume } from '@/types';
+import { Resume } from '@/interfaces/types';
 
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/constants';
 
 export const resumesFetch = async (): Promise<Resume[]> => {
     try {
@@ -11,5 +11,6 @@ export const resumesFetch = async (): Promise<Resume[]> => {
       return data;
     } catch (error) {
       console.error('Error fetching resumes:', error);
+      return []; 
     }
 };

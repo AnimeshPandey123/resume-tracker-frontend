@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Briefcase, FileText } from 'lucide-react';
-import { JobApplication, Resume } from '@/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { JobApplication, Resume } from '@/interfaces/types';
 import JobCard from '@/components/JobCard';
 import JobForm from '@/components/JobForm';
 import EmptyState from '@/components/EmptyState';
@@ -12,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { resumesFetch } from '@/lib/fetch';
+import { API_URL } from '@/constants';
 
 const Jobs = () => {
   const [jobs, setJobs] = useState<JobApplication[]>([]);
@@ -19,7 +19,6 @@ const Jobs = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingJob, setEditingJob] = useState<JobApplication | undefined>(undefined);
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const API_URL = import.meta.env.VITE_API_URL;
 
 
   const handleCreateJob = () => {

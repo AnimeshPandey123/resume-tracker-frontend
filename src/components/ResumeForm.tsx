@@ -5,10 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Education, Experience, Resume, Skill } from '@/types';
+import { Education, Experience, Resume, Skill } from '@/interfaces/types';
 import { Plus, Trash2, GraduationCap, Briefcase, Star } from 'lucide-react';
 import { toast } from 'sonner';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { API_URL } from '@/constants';
 
 interface ResumeFormProps {
   open: boolean;
@@ -17,7 +18,6 @@ interface ResumeFormProps {
   onSave: (resume: Resume) => void;
 }
 
-const API_URL = import.meta.env.VITE_API_URL;
 
 const emptyEducation: Education = {
   id: '',

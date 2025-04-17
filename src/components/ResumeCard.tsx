@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Edit2, Trash2, Copy } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { Resume } from '@/types';
+import { Resume } from '@/interfaces/types';
 import AnimatedWrapper from './AnimatedWrapper';
 
 interface ResumeCardProps {

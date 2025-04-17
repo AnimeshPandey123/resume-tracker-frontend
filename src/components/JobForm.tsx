@@ -8,10 +8,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { JobApplication, Resume } from '@/types';
+import { JobApplication, Resume } from '@/interfaces/types';
 import { toast } from 'sonner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { v4 as uuidv4 } from 'uuid';
+import { API_URL } from '@/constants';
 
 interface JobFormProps {
   open: boolean;
@@ -21,7 +22,6 @@ interface JobFormProps {
   resumes: Resume[];
 }
 
-const API_URL = import.meta.env.VITE_API_URL;
 
 
 const emptyJob: JobApplication = {

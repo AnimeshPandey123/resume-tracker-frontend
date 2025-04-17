@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router"
 import "@/styles/resumes.css"
-// import API_URL from '@/config'
+import { API_URL } from '@/constants';
 
 interface Resume {
   id: number;
@@ -11,7 +11,6 @@ interface Resume {
 
 function Resumes() {
   const [resumes, setResumes] = useState<Resume[]>([]);
-  const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
 

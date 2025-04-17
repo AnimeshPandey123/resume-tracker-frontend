@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, FileText } from 'lucide-react';
-import { Resume } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 import ResumeCard from '@/components/ResumeCard';
 import ResumeForm from '@/components/ResumeForm';
@@ -11,13 +10,14 @@ import AnimatedWrapper from '@/components/AnimatedWrapper';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { toast } from 'sonner';
 import { resumesFetch } from '@/lib/fetch';
-import { JobApplication } from '@/interfaces/types';
+import { Resume } from '@/interfaces/types';
+import { API_URL } from '@/constants';
+
 
 const Index = () => {
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingResume, setEditingResume] = useState<Resume | undefined>(undefined);
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const resumeSetter = async (): Promise<void> => {
     try{
