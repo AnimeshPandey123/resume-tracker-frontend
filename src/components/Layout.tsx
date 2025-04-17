@@ -22,7 +22,7 @@ import { FileText, Briefcase, LayoutTemplate, BarChart3, Settings, LogOut } from
 import { useLocation, Link } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { Resume } from '@/types';
+import { Resume } from '@/interfaces/types';
 
 const Layout = () => {
   const location = useLocation();

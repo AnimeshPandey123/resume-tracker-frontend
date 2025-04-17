@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import "@/styles/resumes.css";
+import { API_URL } from '@/constants';
 
 interface Resume {
   user_id: number;
@@ -11,7 +12,6 @@ interface Resume {
 function ResumeUpdate() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const API_URL = import.meta.env.VITE_API_URL;
   
   const [resume, setResume] = useState<Resume | null>(null);
   const [isLoading, setIsLoading] = useState(true);
