@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router"
 import "@/styles/resumes.css"
 // import API_URL from '@/config'
 
@@ -10,7 +11,8 @@ interface Resume {
 
 function Resumes() {
   const [resumes, setResumes] = useState<Resume[]>([]);
-  const API_URL = import.meta.env.VITE_API_URL ;
+  const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -33,8 +35,10 @@ function Resumes() {
       <div>Resumes:</div>
       <div className="resumes">
         {resumes.map((resume) => (
-          <div className="resume-item" key={resume.id}>
-            {resume.title}: {resume.summary}
+          <div className="resume-item" key={resume.id} onClick={
+            () => navigate(`/resumes/${resume.id}`)
+          }>
+            {resume.title}: {resume.summary}  
           </div>
         ))}
       </div>
