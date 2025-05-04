@@ -93,7 +93,7 @@ const JobCard = ({
         </CardContent>
         <CardFooter className="flex justify-between pt-2 border-t bg-secondary/20">
           <p className="text-xs text-muted-foreground">
-            Applied {job.dateApplied}
+            Applied {job.date_applied}
           </p>
           <div className="flex space-x-1">
             {job.link && (

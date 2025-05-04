@@ -3,6 +3,9 @@ import userEvent from '@testing-library/user-event';
 import Index from '@/pages/Index';
 import '@testing-library/jest-dom';
 import { toast } from 'sonner';
+import { Resume } from '@/interfaces/types';
+import ResumeForm from '@/components/ResumeForm';
+
 
 // Mock dependencies
 jest.mock('@/components/ResumeForm', () => ({ 
@@ -107,6 +110,23 @@ const mockResumes = [
   }
 ];
 
+const newResume: Resume = {
+  id: '1',
+  title: 'Data Scientist Resume',
+  summary: 'Data Scientist with 5 years experience in data science',
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  experiences: [],
+  education: [],
+  skills: []
+};
+const defaultProps = {
+  open: true,
+  onOpenChange: jest.fn(),
+  initialData: undefined,
+  onSave: jest.fn(),
+};
+
 
 (global.fetch as jest.Mock) = jest.fn(() =>
     Promise.resolve({
@@ -210,4 +230,35 @@ const mockResumes = [
           expect(resumeForm.getAttribute('data-editing')).toBe('true');
         });
       });
+      test('deletes a resume when delete button is clicked', async () => {
+          const { resumesFetch } = require('@/lib/fetch');
+          resumesFetch.mockResolvedValue([]);
+          const mockResumes = [
+            {
+              id: '1',
+              title: 'Software Engineer Resume',
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            },
+          ];
+      
+          (resumesFetch as jest.Mock).mockResolvedValue(mockResumes);
+      
+          global.fetch = jest.fn().mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({}),
+          }) as jest.Mock;
+      
+          render(<Index />);
+      
+          // Wait for resume card to appear
+          const deleteBtn = await screen.findByRole('button', { name: /delete/i });
+          fireEvent.click(deleteBtn);
+      
+          await waitFor(() => {
+            expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/api/resumes/1'), expect.objectContaining({
+              method: 'DELETE',
+            }));
+          });
+    });
 });
