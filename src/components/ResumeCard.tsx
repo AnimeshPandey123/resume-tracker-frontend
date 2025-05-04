@@ -10,7 +10,6 @@ interface ResumeCardProps {
   resume: Resume;
   onEdit: (resume: Resume) => void;
   onDelete: (id: string) => void;
-  onDuplicate: (resume: Resume) => void;
   index: number;
 }
 
@@ -18,7 +17,6 @@ const ResumeCard = ({
   resume, 
   onEdit, 
   onDelete, 
-  onDuplicate, 
   index 
 }: ResumeCardProps) => {
   return (
@@ -45,15 +43,6 @@ const ResumeCard = ({
             {formatDistanceToNow(new Date(resume.updated_at), { addSuffix: true })}
           </p>
           <div className="flex space-x-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-7 w-7 rounded-full"
-              onClick={() => onDuplicate(resume)}
-            >
-              <Copy className="h-3.5 w-3.5" />
-              <span className="sr-only">Duplicate</span>
-            </Button>
             <Button
               variant="ghost"
               size="icon"
