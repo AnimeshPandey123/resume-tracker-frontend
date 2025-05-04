@@ -10,7 +10,7 @@ import AnimatedWrapper from '@/components/AnimatedWrapper';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { resumesFetch } from '@/lib/fetch';
+import { resumesFetch, jobsFetch } from '@/lib/fetch';
 import { API_URL } from '@/constants';
 
 const Jobs = () => {
@@ -19,6 +19,8 @@ const Jobs = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingJob, setEditingJob] = useState<JobApplication | undefined>(undefined);
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const token = localStorage.getItem('token');
+
 
 
   const handleCreateJob = () => {
@@ -26,18 +28,7 @@ const Jobs = () => {
     setIsFormOpen(true);
   };
 
-  const jobsFetch = async (): Promise<void> => {
-    try {
-      const url = API_URL + '/api/jobs?user_id=1'
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data: Resume[] = await response.json();
-      console.log(data)
-      setJobs(data);
-    } catch (error) {
-      console.error('Error fetching resumes:', error);
-    }
-  };
+
 
   const resumeSetter = async (): Promise<void> => {
     try{
@@ -48,9 +39,18 @@ const Jobs = () => {
     }
   }
 
+  const jobsSetter = async (): Promise<void> => {
+    try{
+      const jobs = await jobsFetch();
+      setJobs(jobs)
+    }catch (error){
+
+    }
+  }
+
   useEffect(() => {
     resumeSetter();
-    jobsFetch();
+    jobsSetter();
   }, []);
 
   const handleEditJob = (job: JobApplication) => {
@@ -102,7 +102,7 @@ const Jobs = () => {
                   value={statusFilter}
                   onValueChange={setStatusFilter}
                 >
-                  <SelectTrigger id="status-filter">
+                  <SelectTrigger id="status-filter" data-testid="status-filter-trigger">
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>

@@ -62,6 +62,8 @@ const ResumeForm = ({ open, onOpenChange, initialData, onSave }: ResumeFormProps
     ...emptyResume,
     ...(initialData || {}),
   });
+
+  const token = localStorage.getItem('token');
   
   // For debugging
   console.log('resume state initialized:', resume);
@@ -92,7 +94,9 @@ const ResumeForm = ({ open, onOpenChange, initialData, onSave }: ResumeFormProps
         const response = await fetch(url, {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(resume),
         });

@@ -30,11 +30,8 @@ const Layout = () => {
   // Get current page name for breadcrumbs
   const getPageName = () => {
     const path = location.pathname;
-    if (path === '/') return 'Resumes';
+    if (path === '/home') return 'Resumes';
     if (path === '/jobs') return 'Job Applications';
-    if (path === '/templates') return 'Templates';
-    if (path === '/analytics') return 'Analytics';
-    if (path === '/settings') return 'Settings';
     return '';
   };
 
@@ -65,8 +62,8 @@ const Layout = () => {
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={isActive('/')} tooltip="Resumes">
-                      <Link to="/">
+                    <SidebarMenuButton asChild isActive={isActive('/home')} tooltip="Resumes">
+                      <Link to="/home">
                         <FileText className="h-4 w-4" />
                         <span>Resumes</span>
                       </Link>
@@ -97,7 +94,7 @@ const Layout = () => {
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink asChild>
-                      <Link to="/">Home</Link>
+                      <Link to="/home">Home</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />

@@ -18,6 +18,7 @@ const Index = () => {
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingResume, setEditingResume] = useState<Resume | undefined>(undefined);
+  const token = localStorage.getItem('token');
 
   const resumeSetter = async (): Promise<void> => {
     try{
@@ -48,7 +49,10 @@ const Index = () => {
       const response = await fetch(url, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+
         }
       });
       
@@ -62,19 +66,6 @@ const Index = () => {
     await resumeDelete(id)
     resumeSetter()
     toast.success('Resume deleted');
-  };
-
-  const handleDuplicateResume = (resume: Resume) => {
-    const newResume: Resume = {
-      ...resume,
-      id: '',
-      title: `${resume.title} (Copy)`,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    };
-    
-    setResumes([...resumes, newResume]);
-    toast.success('Resume duplicated');
   };
 
   const handleSaveResume = (resume: Resume) => {
@@ -132,7 +123,6 @@ const Index = () => {
                 resume={resume}
                 onEdit={handleEditResume}
                 onDelete={handleDeleteResume}
-                onDuplicate={handleDuplicateResume}
                 index={index}
               />
             ))}

@@ -1,5 +1,6 @@
-
 import { useState } from 'react';
+import { useNavigate } from "react-router"
+
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
@@ -9,32 +10,72 @@ import { FileText, ArrowRight, LogIn, UserPlus } from 'lucide-react';
 import AnimatedWrapper from '@/components/AnimatedWrapper';
 import { toast } from 'sonner';
 
+const API_URL = import.meta.env.VITE_API_URL as string;
+
 const Landing = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Demo login - in a real app, this would connect to an auth service
-    toast.success('Login successful!');
-    setIsLoginOpen(false);
-    window.location.href = '/';
+    try {
+      const res = await fetch(`${API_URL}/api/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) throw new Error('Invalid credentials');
+
+      const data = await res.json();
+      localStorage.setItem('token', data.token);
+      toast.success('Login successful!');
+      setIsLoginOpen(false);
+      navigate('/home');
+    } catch (err: any) {
+      toast.error(err.message || 'Login failed');
+    }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Demo registration - in a real app, this would connect to an auth service
-    toast.success('Registration successful!');
-    setIsRegisterOpen(false);
-    window.location.href = '/';
+    try {
+      const res = await fetch(`${API_URL}/api/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+
+        },
+        body: JSON.stringify({
+          'name': name, 'email': email,'password': password, 'password_confirmation':confirmPassword
+         }),
+      });
+
+      if (!res.ok) throw new Error('Registration failed');
+
+      const data = await res.json();
+      localStorage.setItem('token', data.token);
+      toast.success('Registration successful!');
+      setIsRegisterOpen(false);
+      navigate('/home');
+    } catch (err: any) {
+      toast.error(err.message || 'Registration failed');
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
+      {/* HEADER */}
       <header className="border-b py-4 px-6">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -42,6 +83,7 @@ const Landing = () => {
             <h1 className="text-xl font-semibold">Resume Builder</h1>
           </div>
           <div className="flex items-center gap-2">
+            {/* LOGIN DIALOG */}
             <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" className="gap-2">
@@ -59,10 +101,9 @@ const Landing = () => {
                 <form onSubmit={handleLogin} className="space-y-4 py-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input 
-                      id="email" 
-                      type="email" 
-                      placeholder="example@email.com"
+                    <Input
+                      id="email"
+                      type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -70,8 +111,8 @@ const Landing = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
-                    <Input 
-                      id="password" 
+                    <Input
+                      id="password"
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -79,12 +120,15 @@ const Landing = () => {
                     />
                   </div>
                   <DialogFooter className="pt-4">
-                    <Button type="submit" className="w-full">Log In</Button>
+                    <Button type="submit" className="w-full">
+                      Log In
+                    </Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
             </Dialog>
 
+            {/* REGISTER DIALOG */}
             <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
               <DialogTrigger asChild>
                 <Button className="gap-2">
@@ -102,8 +146,8 @@ const Landing = () => {
                 <form onSubmit={handleRegister} className="space-y-4 py-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
-                    <Input 
-                      id="name" 
+                    <Input
+                      id="name"
                       placeholder="John Doe"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -112,10 +156,9 @@ const Landing = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="register-email">Email</Label>
-                    <Input 
-                      id="register-email" 
-                      type="email" 
-                      placeholder="example@email.com"
+                    <Input
+                      id="register-email"
+                      type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -123,16 +166,28 @@ const Landing = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="register-password">Password</Label>
-                    <Input 
-                      id="register-password" 
+                    <Input
+                      id="register-password"
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="register-confirm-password">Confirm Password</Label>
+                    <Input
+                      id="register-confirm-password"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </div>
                   <DialogFooter className="pt-4">
-                    <Button type="submit" className="w-full">Register</Button>
+                    <Button type="submit" className="w-full">
+                      Register
+                    </Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
@@ -140,6 +195,7 @@ const Landing = () => {
           </div>
         </div>
       </header>
+
 
       {/* Hero Section */}
       <section className="flex-1 flex items-center py-16 md:py-24">
@@ -152,11 +208,11 @@ const Landing = () => {
               Create, customize and download professional resumes tailored to your career goals. Stand out to employers and land your dream job.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <Button onClick={() => setRegisterOpen(true)} size="lg" className="gap-2">
+              <Button onClick={() => setIsRegisterOpen(true)} size="lg" className="gap-2">
                 Get Started
                 <ArrowRight className="h-4 w-4" />
               </Button>
-              <Link to="/">
+              <Link to="/home">
                 <Button variant="outline" size="lg">
                   Explore Templates
                 </Button>

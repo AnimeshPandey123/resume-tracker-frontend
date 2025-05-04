@@ -20,7 +20,7 @@ const Header = () => {
         </div>
         
         <nav className="glass rounded-full border border-gray-200 p-1 flex items-center">
-          <Link to="/">
+          <Link to="/home">
             <Button
               variant={isActive('/') ? "default" : "ghost"}
               size="sm"

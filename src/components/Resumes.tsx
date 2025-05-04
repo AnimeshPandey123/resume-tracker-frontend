@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router"
 import "@/styles/resumes.css"
 import { API_URL } from '@/constants';
+import { resumesFetch } from '@/lib/fetch';
 
 interface Resume {
   id: number;
@@ -18,16 +19,6 @@ function Resumes() {
     resumesFetch();
   }, []);
 
-  const resumesFetch = async (): Promise<void> => {
-    try {
-      const url = API_URL + '/api/resumes?user_id=1'
-      const response = await fetch(url);
-      const data: Resume[] = await response.json();
-      setResumes(data);
-    } catch (error) {
-      console.error('Error fetching resumes:', error);
-    }
-  };
 
   return (
     <div className="Resumes">

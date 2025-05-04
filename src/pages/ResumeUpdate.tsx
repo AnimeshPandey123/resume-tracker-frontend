@@ -18,6 +18,7 @@ function ResumeUpdate() {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const token = localStorage.getItem('token');
 
   const handleChange = (field: string, value: string) => {
     setResume((prev) => prev ? {
@@ -35,7 +36,13 @@ function ResumeUpdate() {
     
     try {
       const url = `${API_URL}/api/resumes/${id}?user_id=1`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
       
       if (!response.ok) {
         throw new Error(`Failed to fetch resume: ${response.statusText}`);
@@ -64,8 +71,9 @@ function ResumeUpdate() {
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-        },
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'        },
         body: JSON.stringify(resume),
       });
       
