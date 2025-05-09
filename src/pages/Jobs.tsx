@@ -48,6 +48,27 @@ const Jobs = () => {
     }
   }
 
+  const jobDelete = async (id: string): Promise<void> => {
+    const url = `${API_URL}/api/jobs/${id}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-HTTP-Method-Override': 'DELETE'
+
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to update resume: ${response.statusText}`);
+      }
+  }
+
   useEffect(() => {
     resumeSetter();
     jobsSetter();
@@ -58,8 +79,9 @@ const Jobs = () => {
     setIsFormOpen(true);
   };
 
-  const handleDeleteJob = (id: string) => {
-    setJobs(jobs.filter(job => job.id !== id));
+  const handleDeleteJob = async (id: string) => {
+    await jobDelete(id)
+    await jobsSetter();
     toast.success('Job application deleted');
   };
 
