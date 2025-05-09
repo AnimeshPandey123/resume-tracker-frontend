@@ -7,7 +7,8 @@ const token = localStorage.getItem('token');
 // console.log(token)
 export const resumesFetch = async (): Promise<Resume[]> => {
     try {
-      const url = API_URL + '/api/resumes?user_id=1'
+      console.log(token)
+      const url = API_URL + '/api/resumes'
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -26,7 +27,7 @@ export const resumesFetch = async (): Promise<Resume[]> => {
 
 export  const jobsFetch = async (): Promise<JobApplication[]> => {
     try {
-      const url = API_URL + '/api/jobs?user_id=1'
+      const url = API_URL + '/api/jobs'
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -42,3 +43,26 @@ export  const jobsFetch = async (): Promise<JobApplication[]> => {
       return [];
     }
   };
+
+
+export async function getAuthenticatedUser(): Promise<{ name: string } | null> {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+
+  try {
+    const res = await fetch(`${API_URL}/api/user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+
+    if (!res.ok) throw new Error('Invalid token');
+
+    const user = await res.json();
+    return user;
+  } catch (err) {
+    localStorage.removeItem('token');
+    return null;
+  }
+}

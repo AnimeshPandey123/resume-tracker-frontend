@@ -1,7 +1,6 @@
-
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Edit2, Trash2, Copy } from 'lucide-react';
+import { Edit2, Trash2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Resume } from '@/interfaces/types';
 import AnimatedWrapper from './AnimatedWrapper';
@@ -19,15 +18,28 @@ const ResumeCard = ({
   onDelete, 
   index 
 }: ResumeCardProps) => {
+  // Safe date formatting function
+  const formatDate = (dateString: string) => {
+    try {
+      console.log("Date string:", dateString);
+      const date = new Date(dateString);
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return "Recently";
+      }
+      return formatDistanceToNow(date, { addSuffix: true });
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Recently";
+    }
+  };
+
   return (
     <AnimatedWrapper delay={index * 50} className="h-full">
       <Card className="glass h-full overflow-hidden border transition-all duration-300 hover:shadow-md">
         <CardHeader className="pb-2">
           <CardTitle className="flex justify-between items-center gap-2 text-lg">
             <span className="truncate">{resume.title}</span>
-            {/* <div className="flex-shrink-0 inline-flex h-5 items-center rounded-full border px-2 text-xs font-medium">
-              {resume.experience && resume.experience.length} exp
-            </div> */}
           </CardTitle>
         </CardHeader>
         <CardContent className="pb-2">
@@ -40,7 +52,7 @@ const ResumeCard = ({
         </CardContent>
         <CardFooter className="flex justify-between pt-2 border-t bg-secondary/20">
           <p className="text-xs text-muted-foreground">
-            {formatDistanceToNow(new Date(resume.updated_at), { addSuffix: true })}
+            {formatDate(resume.updated_at)}
           </p>
           <div className="flex space-x-1">
             <Button
@@ -69,4 +81,3 @@ const ResumeCard = ({
 };
 
 export default ResumeCard;
-  

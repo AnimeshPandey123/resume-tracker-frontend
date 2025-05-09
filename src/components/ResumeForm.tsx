@@ -104,6 +104,21 @@ const ResumeForm = ({ open, onOpenChange, initialData, onSave }: ResumeFormProps
         if (!response.ok) {
           throw new Error(`Failed to update resume: ${response.statusText}`);
         }
+      }else{
+        const url = `${API_URL}/api/resumes`;
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(resume),
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to create resume: ${response.statusText}`);
+        }
       }
       
       onSave(resume);

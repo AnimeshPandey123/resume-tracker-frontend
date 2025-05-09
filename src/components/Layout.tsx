@@ -1,6 +1,8 @@
 
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useNavigate } from "react-router"
+
 import { 
   SidebarProvider, 
   Sidebar, 
@@ -23,10 +25,20 @@ import { useLocation, Link } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Resume } from '@/interfaces/types';
+import { toast } from 'sonner';
 
 const Layout = () => {
   const location = useLocation();
-  
+  const navigate = useNavigate();
+
+  const handleLogout = () =>{
+    console.log('Logged out');
+    localStorage.removeItem('token');
+
+    toast.success('Logged out successfully!');
+    navigate('/');
+  }
+
   // Get current page name for breadcrumbs
   const getPageName = () => {
     const path = location.pathname;
@@ -76,6 +88,12 @@ const Layout = () => {
                         <Briefcase className="h-4 w-4" />
                         <span>Job Applications</span>
                       </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton  tooltip="Logout" onClick={handleLogout} >
+                      <LogOut className="h-4 w-4"   />
+                        <span>Logout</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </SidebarMenu>

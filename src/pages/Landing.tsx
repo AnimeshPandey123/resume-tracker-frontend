@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router"
+import { LogOut } from 'lucide-react'; // Import LogOut icon from lucide-react
 
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import {  DropdownMenuItem, DropdownMenu, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuContent, DropdownMenuLabel } from '@/components/ui/dropdown-menu'; // Assuming shadecn has these components
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { FileText, ArrowRight, LogIn, UserPlus } from 'lucide-react';
 import AnimatedWrapper from '@/components/AnimatedWrapper';
 import { toast } from 'sonner';
+import {getAuthenticatedUser} from '@/lib/fetch';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
@@ -21,6 +24,19 @@ const Landing = () => {
   const [name, setName] = useState('');
 
   const navigate = useNavigate();
+
+  const [user, setUser] = useState<{ name: string } | null>(null);
+
+  useEffect(() => {
+    getAuthenticatedUser().then(setUser);
+  }, []);
+
+  const handleLogout = () =>{
+    localStorage.removeItem('token');
+    setUser(null);
+    toast.success('Logged out successfully!');
+    navigate('/');
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,7 +98,24 @@ const Landing = () => {
             <FileText className="h-6 w-6 text-primary" />
             <h1 className="text-xl font-semibold">Resume Builder</h1>
           </div>
-          <div className="flex items-center gap-2">
+          {user ? (
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex items-center gap-2 px-4 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary/80">
+          <span className="font-medium">Welcome, {user.name}</span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48 mt-2">
+          <DropdownMenuLabel>Account</DropdownMenuLabel>
+          <DropdownMenuItem className="cursor-pointer">
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600">
+            <LogOut className="h-4 w-4 mr-2" />
+            Log Out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ) : (<div className="flex items-center gap-2" >
             {/* LOGIN DIALOG */}
             <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
               <DialogTrigger asChild>
@@ -192,7 +225,8 @@ const Landing = () => {
                 </form>
               </DialogContent>
             </Dialog>
-          </div>
+          </div>)
+          }
         </div>
       </header>
 

@@ -35,7 +35,7 @@ function ResumeUpdate() {
     setError(null);
     
     try {
-      const url = `${API_URL}/api/resumes/${id}?user_id=1`;
+      const url = `${API_URL}/api/resumes/${id}`;
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,

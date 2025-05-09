@@ -177,6 +177,7 @@ const JobForm = ({ open, onOpenChange, initialData, onSave, resumes }: JobFormPr
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="applying">Applying</SelectItem>
                     <SelectItem value="applied">Applied</SelectItem>
                     <SelectItem value="interviewing">Interviewing</SelectItem>
                     <SelectItem value="offered">Offered</SelectItem>
