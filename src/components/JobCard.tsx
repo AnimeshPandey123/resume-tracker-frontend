@@ -36,7 +36,7 @@ const JobCard = ({
 
       const res = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`, 'Accept': 'application/json' },
         body: JSON.stringify({
           resume_id: resume.id,
           job_application_id: job.id,
