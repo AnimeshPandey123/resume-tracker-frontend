@@ -39,7 +39,7 @@ export type JobApplication = {
   id: string;
   company: string;
   position: string;
-  status: 'applied' | 'interviewing' | 'offered' | 'rejected';
+  status: 'applying' | 'applied' | 'interviewing' | 'offered' | 'rejected';
   date_applied: string;
   resume_id: string;
   description: string;
