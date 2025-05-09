@@ -80,11 +80,12 @@ const JobForm = ({ open, onOpenChange, initialData, onSave, resumes }: JobFormPr
     if (job.id){
       const url = `${API_URL}/api/jobs/${job.id}`;
       const response = await fetch(url, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-HTTP-Method-Override': 'PUT'
         },
         body: JSON.stringify(job),
       });

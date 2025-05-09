@@ -92,13 +92,16 @@ const ResumeForm = ({ open, onOpenChange, initialData, onSave }: ResumeFormProps
       if (initialData?.id) {
         const url = `${API_URL}/api/resumes/${initialData.id}`;
         const response = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
+          method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(resume),
+            'Content-Type': 'application/json',
+            'X-HTTP-Method-Override': 'PUT'
+        },
+        body: JSON.stringify({
+          ...resume
+        }),
         });
         
         if (!response.ok) {

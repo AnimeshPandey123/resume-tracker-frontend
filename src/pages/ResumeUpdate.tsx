@@ -69,12 +69,17 @@ function ResumeUpdate() {
     try {
       const url = `${API_URL}/api/resumes/${id}`;
       const response = await fetch(url, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'        },
-        body: JSON.stringify(resume),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-HTTP-Method-Override': 'PUT'
+
+        },
+        body: JSON.stringify({
+          ...resume,
+        }),
       });
       
       if (!response.ok) {

@@ -47,13 +47,17 @@ const Index = () => {
   const resumeDelete = async (id: string): Promise<void> => {
     const url = `${API_URL}/api/resumes/${id}`;
       const response = await fetch(url, {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-HTTP-Method-Override': 'DELETE'
 
-        }
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
       });
       
       if (!response.ok) {
