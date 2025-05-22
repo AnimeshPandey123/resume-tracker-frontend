@@ -3,11 +3,11 @@ import { JobApplication, Resume } from '@/interfaces/types';
 import { API_URL } from '@/constants';
 
 
-const token = localStorage.getItem('token');
 // console.log(token)
 export const resumesFetch = async (): Promise<Resume[]> => {
     try {
-      console.log(token)
+      const token = localStorage.getItem('token');
+
       const url = API_URL + '/api/resumes'
       const response = await fetch(url, {
         headers: {
@@ -27,6 +27,8 @@ export const resumesFetch = async (): Promise<Resume[]> => {
 
 export  const jobsFetch = async (): Promise<JobApplication[]> => {
     try {
+      const token = localStorage.getItem('token');
+
       const url = API_URL + '/api/jobs'
       const response = await fetch(url, {
         headers: {
